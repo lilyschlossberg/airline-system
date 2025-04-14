@@ -26,14 +26,14 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t lilyschlossberg/airline-system .'
+                sh '/usr/local/bin/docker build -t lilyschlossberg/airline-system .'
             }
         }
 
         stage('Push Docker Image') {
             steps {
                 withDockerRegistry([ credentialsId: 'dockerhub-creds', url: '' ]) {
-                    sh 'docker push lilyschlossberg/airline-system'
+                    sh '/usr/local/bin/docker push lilyschlossberg/airline-system'
                 }
             }
         }
