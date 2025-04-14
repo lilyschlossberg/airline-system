@@ -8,19 +8,19 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                sh '/Applications/miniconda3/bin/pip3 install -r requirements.txt'
             }
         }
 
         stage('Lint') {
             steps {
-                sh 'flake8 app/'
+                sh '/Applications/miniconda3/bin/pip3 install flake8 && /Applications/miniconda3/bin/flake8 app/'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'pytest tests/ --cov=app || true'
+                sh '/Applications/miniconda3/bin/pip3 install pytest pytest-cov && /Applications/miniconda3/bin/pytest tests/ --cov=app || true'
             }
         }
 
