@@ -14,30 +14,26 @@ pipeline {
 
         stage('Lint') {
             steps {
-                sh '/Applications/miniconda3/bin/pip3 install flake8 && /Applications/miniconda3/bin/flake8 app/'
+                sh '/Applications/miniconda3/bin/flake8 app/'
             }
         }
 
         stage('Test') {
             steps {
-                sh '/Applications/miniconda3/bin/pip3 install pytest pytest-cov && /Applications/miniconda3/bin/pytest tests/ --cov=app || true'
+                sh '/Applications/miniconda3/bin/pytest tests/ --cov=app || true'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("${DOCKER_HUB_REPO}")
-                }
+                sh 'docker build -t lilyschlossberg/airline-system .'
             }
         }
 
         stage('Push Docker Image') {
             steps {
                 withDockerRegistry([ credentialsId: 'dockerhub-creds', url: '' ]) {
-                    script {
-                        docker.image("${DOCKER_HUB_REPO}").push('latest')
-                    }
+                    sh 'docker push lilyschlossberg/airline-system'
                 }
             }
         }
